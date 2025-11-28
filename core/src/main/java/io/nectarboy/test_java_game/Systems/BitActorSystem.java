@@ -14,15 +14,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 
 
-public class PlayerActorSystem extends IteratingSystem {
-	private ComponentMapper<PlayerComponent> playerM = ComponentMapper.getFor(PlayerComponent.class);
+public class BitActorSystem extends IteratingSystem {
+	private ComponentMapper<BitComponent> bitM = ComponentMapper.getFor(BitComponent.class);
 	private ComponentMapper<TransformComponent> transformM = ComponentMapper.getFor(TransformComponent.class);
 	private ComponentMapper<PhysicsComponent> physicsM = ComponentMapper.getFor(PhysicsComponent.class);
 	
+	private Main game;
 	public MessageListener messageListener = new MessageListener();
 	
-	public PlayerActorSystem(Main game) {
-		super(Family.all(PlayerComponent.class, TransformComponent.class).get());
+	public BitActorSystem(Main game) {
+		super(Family.all(BitComponent.class, TransformComponent.class).get());
+		this.game = game;
 	}
 	
 	private void handleMessages() {
@@ -30,17 +32,18 @@ public class PlayerActorSystem extends IteratingSystem {
 		while (nextM != null) {
 			Message m = nextM;
 			nextM = messageListener.getNextMessage();
-			
+		
 			Entity recipient = m.getRecipient();
 			if (!getFamily().matches(recipient))
 				continue;
 			
 			switch (m.getType()) {
-				case COLLISION:
-					System.out.println("Collide with unknown.");
+				case COLLISION_PLAYER:
+					System.out.println("Bit dies.");
+					recipient.add(game.engine.createComponent(KillEntityComponent.class));
 					break;
-				case COLLISION_BIT:
-					System.out.println("Collide with bit.");
+				default:
+					System.out.println("Bit: hmm?");
 					break;
 			}
 		}
@@ -54,25 +57,9 @@ public class PlayerActorSystem extends IteratingSystem {
 	
 	@Override
 	public void processEntity(Entity entity, float deltaTime) {
-		PlayerComponent player = playerM.get(entity);
+		BitComponent bit = bitM.get(entity);
 		TransformComponent transform = transformM.get(entity);
 		PhysicsComponent physics = physicsM.get(entity);
-		
-		final float SPEED = 4 * PhysicsSystem.WORLD_SCALE;
-		
-		// Input
-		Vector2 direction = new Vector2();
-		
-		if (Gdx.input.isKeyPressed(Input.Keys.W))
-			direction.y += 1;
-		if (Gdx.input.isKeyPressed(Input.Keys.S))
-			direction.y -= 1;
-		if (Gdx.input.isKeyPressed(Input.Keys.D))
-			direction.x += 1;
-		if (Gdx.input.isKeyPressed(Input.Keys.A))
-			direction.x -= 1;
-		
-		physics.velocity.set(direction.nor().scl(SPEED));
 	}
 	
 	@Override

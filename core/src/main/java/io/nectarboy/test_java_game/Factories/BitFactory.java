@@ -12,6 +12,10 @@ public class BitFactory {
 	public static Entity make(PooledEngine engine, World world, float x, float y, BitComponent.Type bitType) {
 		Entity entity = engine.createEntity();
 		
+		BitComponent bit = engine.createComponent(BitComponent.class);
+		bit.type = bitType;
+		entity.add(bit);
+		
 		TransformComponent transform = engine.createComponent(TransformComponent.class);
 		transform.position.x = x;
 		transform.position.y = y;
