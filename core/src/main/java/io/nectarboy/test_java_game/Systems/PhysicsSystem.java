@@ -15,8 +15,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
 public class PhysicsSystem extends IteratingSystem {
-	public static float WORLD_SCALE = 0.02f; // Move somewhere else?
-	public static float I_WORLD_SCALE = 1 / WORLD_SCALE;
+	final public static float WORLD_SCALE = 0.02f; // Move somewhere else?
+	final public static float I_WORLD_SCALE = 1 / WORLD_SCALE;
 	
 	private ComponentMapper<TransformComponent> transformM = ComponentMapper.getFor(TransformComponent.class);
 	private ComponentMapper<PhysicsComponent> physicsM = ComponentMapper.getFor(PhysicsComponent.class);
@@ -34,8 +34,11 @@ public class PhysicsSystem extends IteratingSystem {
 		public void beginContact(Contact contact) {
 			Entity a = (Entity)contact.getFixtureA().getBody().getUserData();
 			Entity b = (Entity)contact.getFixtureB().getBody().getUserData();
-			if (a == null || b == null)
+			if (a == null || b == null) {
+//				System.out.println(a);
+//				System.out.println(b);
 				return;
+			}
 			
 			PhysicsComponent physicsA = physicsM.get(a);
 			PhysicsComponent physicsB = physicsM.get(b);

@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
 public class PhysicsBodyFactory {
-	public static Body makeBox(World world, BodyDef.BodyType bodyType, Vector2 position, float width, float height) {
+	public static Body makeBox(World world, BodyDef.BodyType bodyType, boolean isSensor, Vector2 position, float width, float height) {
 		// First we create a body definition
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = bodyType;
@@ -21,11 +21,12 @@ public class PhysicsBodyFactory {
 
 		// Create a fixture definition to apply our shape to
 		FixtureDef fixtureDef = new FixtureDef();
+		fixtureDef.isSensor = isSensor;
 		fixtureDef.shape = shape;
 
 		// Create our fixture and attach it to the body
 		Fixture fixture = body.createFixture(fixtureDef);
-
+	
 		// Remember to dispose of any shapes after you're done with them!
 		// BodyDef and FixtureDef don't need disposing, but shapes do.
 		shape.dispose();

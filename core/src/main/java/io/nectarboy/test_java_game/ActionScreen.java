@@ -55,7 +55,7 @@ public class ActionScreen implements Screen {
 			float width = x1 - x0;
 			float height = y1 - y0;
 			Vector2 position = new Vector2(x0 + width/2, y0 + height/2);
-			PhysicsBodyFactory.makeBox(game.world, BodyDef.BodyType.StaticBody, position, width, height);
+			PhysicsBodyFactory.makeBox(game.world, BodyDef.BodyType.StaticBody, false, position, width, height);
 		}
 	}
 	

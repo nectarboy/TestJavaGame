@@ -24,7 +24,7 @@ public class BitFactory {
 		PhysicsComponent physics = engine.createComponent(PhysicsComponent.class);
 		physics.collisionMessageT = MessageType.COLLISION_BIT;
 		
-		Body body = PhysicsBodyFactory.makeBox(world, BodyDef.BodyType.DynamicBody, transform.position, 8 * PhysicsSystem.WORLD_SCALE, 8 * PhysicsSystem.WORLD_SCALE);
+		Body body = PhysicsBodyFactory.makeBox(world, BodyDef.BodyType.StaticBody, true, transform.position, 8 * PhysicsSystem.WORLD_SCALE, 8 * PhysicsSystem.WORLD_SCALE);
 		body.setUserData(entity);
 		physics.body = body;
 		entity.add(physics);
