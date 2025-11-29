@@ -33,7 +33,7 @@ public class Main extends Game {
 		viewport = new FitViewport(320 * PhysicsSystem.WORLD_SCALE, 240 * PhysicsSystem.WORLD_SCALE);
 //		frameLimiter = new FrameLimiter();
 		deltaCounter = 0;
-		world = new World(new Vector2(0, 0), true);
+		world = new World(new Vector2(0, 0), false);
 		engine = new PooledEngine(250, 500, 250, 500);
 		screen = new ActionScreen(this);
 		this.setScreen(screen);

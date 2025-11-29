@@ -32,11 +32,12 @@ public class ActionScreen implements Screen {
 		game.engine.addSystem(bitActorSystem);
 		game.engine.addSystem(physicsSystem);
 		game.engine.addSystem(new ActionScreenRenderSystem(game));
+		game.engine.addSystem(new ActionScreenSpawnerSystem(game));
 		game.engine.addSystem(new KillEntitySystem(game));
 
 		
 		game.engine.addEntity(PlayerFactory.make(game.engine, game.world, game.viewport.getWorldWidth()/4, game.viewport.getWorldHeight()/2));
-		game.engine.addEntity(BitFactory.make(game.engine, game.world, game.viewport.getWorldWidth()/2, game.viewport.getWorldHeight()/2, BitComponent.Type.ZERO));
+//		game.engine.addEntity(BitFactory.make(game.engine, game.world, game.viewport.getWorldWidth()/2, game.viewport.getWorldHeight()/2, BitComponent.Type.ZERO));
 		
 		setupWorldStaticBarrier();
 	}

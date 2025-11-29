@@ -20,8 +20,8 @@ public class PhysicsSystem extends IteratingSystem {
 	
 	private ComponentMapper<TransformComponent> transformM = ComponentMapper.getFor(TransformComponent.class);
 	private ComponentMapper<PhysicsComponent> physicsM = ComponentMapper.getFor(PhysicsComponent.class);
-	private Main game;
 	
+	private Main game;
 	public MessagePublisher collisionMessagePublisher = new MessagePublisher();
 	
 	private class CollisionListener implements ContactListener {
@@ -45,7 +45,7 @@ public class PhysicsSystem extends IteratingSystem {
 			if (physicsA == null || physicsB == null)
 				return;
 			
-			System.out.println("Hi.");
+//			System.out.println("Hi.");
 			
 			collisionMessagePublisher.publishMessage(new Message(physicsA.collisionMessageT, a, b));
 			collisionMessagePublisher.publishMessage(new Message(physicsB.collisionMessageT, b, a));
