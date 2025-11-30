@@ -9,6 +9,7 @@ import io.nectarboy.test_java_game.Systems.*;
 import io.nectarboy.test_java_game.Components.*;
 import io.nectarboy.test_java_game.Factories.*;
 import io.nectarboy.test_java_game.Messages.MessagePublisher;
+import io.nectarboy.test_java_game.Messages.MessageType;
 
 public class ActionScreen implements Screen {
 		
@@ -60,7 +61,8 @@ public class ActionScreen implements Screen {
 			float width = x1 - x0;
 			float height = y1 - y0;
 			Vector2 position = new Vector2(x0 + width/2, y0 + height/2);
-			PhysicsBodyFactory.makeBox(game.world, BodyDef.BodyType.StaticBody, false, position, width, height);
+			Body body = PhysicsBodyFactory.makeBody(game.world, BodyDef.BodyType.StaticBody, position);
+			PhysicsBodyFactory.addBoxFixtureToBody(body, MessageType.COLLISION, false, width, height, new Vector2(), 0);
 		}
 	}
 	

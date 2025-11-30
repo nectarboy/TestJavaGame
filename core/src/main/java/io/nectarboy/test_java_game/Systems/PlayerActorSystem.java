@@ -20,9 +20,11 @@ public class PlayerActorSystem extends IteratingSystem {
 	private ComponentMapper<PhysicsComponent> physicsM = ComponentMapper.getFor(PhysicsComponent.class);
 	
 	public MessageListener messageListener = new MessageListener();
+	private Main game;
 	
 	public PlayerActorSystem(Main game) {
 		super(Family.all(PlayerComponent.class, TransformComponent.class).get());
+		this.game = game;
 	}
 	
 	private void handleMessages() {
@@ -39,9 +41,18 @@ public class PlayerActorSystem extends IteratingSystem {
 				case COLLISION:
 					System.out.println("Collide with unknown.");
 					break;
-				case COLLISION_BIT:
+				case COLLISION_BIT: {
 					System.out.println("Collide with bit.");
+					Message response = new Message(MessageType.ACTOR_BIT_COLLECTED, recipient, m.getSender());
+					game.engine.getSystem(BitActorSystem.class).messageListener.queueMessage(response);
 					break;
+				}
+				case COLLISION_BIT_HOMEIN_RADIUS: {
+					System.out.println("Collide with bit homein radius.");
+					Message response = new Message(MessageType.ACTOR_BIT_HOMEIN, recipient, m.getSender());
+					game.engine.getSystem(BitActorSystem.class).messageListener.queueMessage(response);
+					break;
+				}
 			}
 		}
 	}

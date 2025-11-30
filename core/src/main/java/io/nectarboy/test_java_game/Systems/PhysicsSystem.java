@@ -1,5 +1,6 @@
 package io.nectarboy.test_java_game.Systems;
 
+import io.nectarboy.test_java_game.FixtureData;
 import io.nectarboy.test_java_game.Main;
 import io.nectarboy.test_java_game.Components.*;
 import io.nectarboy.test_java_game.Messages.Message;
@@ -32,8 +33,10 @@ public class PhysicsSystem extends IteratingSystem {
 		
 		@Override
 		public void beginContact(Contact contact) {
-			Entity a = (Entity)contact.getFixtureA().getBody().getUserData();
-			Entity b = (Entity)contact.getFixtureB().getBody().getUserData();
+			Fixture fixtureA = contact.getFixtureA();
+			Fixture fixtureB = contact.getFixtureB();
+			Entity a = (Entity)fixtureA.getBody().getUserData();
+			Entity b = (Entity)fixtureB.getBody().getUserData();
 			if (a == null || b == null) {
 //				System.out.println(a);
 //				System.out.println(b);
@@ -46,9 +49,13 @@ public class PhysicsSystem extends IteratingSystem {
 				return;
 			
 //			System.out.println("Hi.");
+			FixtureData dataA = (FixtureData)fixtureA.getUserData();
+			FixtureData dataB = (FixtureData)fixtureB.getUserData();
+			if (dataA == null || dataB == null)
+				return;
 			
-			collisionMessagePublisher.publishMessage(new Message(physicsA.collisionMessageT, a, b));
-			collisionMessagePublisher.publishMessage(new Message(physicsB.collisionMessageT, b, a));
+			collisionMessagePublisher.publishMessage(new Message(dataA.collisionMessageT, a, b));
+			collisionMessagePublisher.publishMessage(new Message(dataB.collisionMessageT, b, a));
 		}
 		
 		@Override

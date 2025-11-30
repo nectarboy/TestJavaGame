@@ -7,6 +7,7 @@ import io.nectarboy.test_java_game.Systems.*;
 import io.nectarboy.test_java_game.Messages.*;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
 public class BitFactory {
@@ -30,11 +31,11 @@ public class BitFactory {
 		entity.add(type);
 		
 		PhysicsComponent physics = engine.createComponent(PhysicsComponent.class);
-		physics.collisionMessageT = MessageType.COLLISION_BIT;
 		
-		Body body = PhysicsBodyFactory.makeBox(world, BodyDef.BodyType.DynamicBody, true, transform.position, bit.width, bit.height);
-		body.setUserData(entity);
-		physics.body = body;
+		physics.body = PhysicsBodyFactory.makeBody(world, BodyDef.BodyType.DynamicBody, transform.position);
+		physics.body.setUserData(entity);
+		PhysicsBodyFactory.addBoxFixtureToBody(physics.body, MessageType.COLLISION_BIT, true, bit.width, bit.height, new Vector2(), 0);
+		PhysicsBodyFactory.addCircleFixtureToBody(physics.body, MessageType.COLLISION_BIT_HOMEIN_RADIUS, true, bit.width * 2, new Vector2(), 0);
 		entity.add(physics);
 
 		SpriteComponent sprite = SpriteComponentFactory.make(engine, bitType == BitComponent.Type.ZERO ? "bit_0" : "bit_1");

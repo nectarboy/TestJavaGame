@@ -46,7 +46,7 @@ public class Main extends Game {
 		engine.update(0);
 		tick++;
 		
-		debugRenderer.render(world, viewport.getCamera().combined);
+//		debugRenderer.render(world, viewport.getCamera().combined);
 	}
 	
 	public int getTick() { return tick; }

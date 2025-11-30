@@ -39,12 +39,29 @@ public class BitActorSystem extends IteratingSystem {
 				continue;
 			
 			switch (m.getType()) {
-				case COLLISION_PLAYER:
+				case ACTOR_BIT_COLLECTED:
 					System.out.println("Bit dies.");
 					EntityHelpers.queueKillEntity(game, recipient);
 					break;
-				default:
-					System.out.println("Bit: hmm?");
+				case ACTOR_BIT_HOMEIN:
+					System.out.println("Bit homes in.");
+					Entity target = m.getSender();
+					TransformComponent targetTransform = transformM.get(target);
+					if (targetTransform == null)
+						break;
+						
+					BitComponent bit = bitM.get(recipient);
+					TransformComponent transform = transformM.get(recipient);
+					PhysicsComponent physics = physicsM.get(recipient);
+					
+					if (bit.homedIn)
+						break;
+				
+					bit.homedIn = true;
+					physics.velocity.add(targetTransform.position.cpy().sub(transform.position).scl(0.33f));
+					physics.velocity.scl(0.75f);
+					if (physics.velocity.x < 0)
+						physics.velocity.x *= -1;
 					break;
 			}
 		}
@@ -64,13 +81,22 @@ public class BitActorSystem extends IteratingSystem {
 		if (physics == null)
 			return;
 		
-		if (transform.position.x > game.viewport.getWorldWidth() + bit.width + bit.height) {
+		// Destroy bits out of bounds
+		if (
+				transform.position.x > game.viewport.getWorldWidth() + bit.width + bit.height ||
+				transform.position.y > game.viewport.getWorldHeight() + bit.width + bit.height ||
+				transform.position.y < 0 - bit.width - bit.height
+		) {
 			EntityHelpers.queueKillEntity(game, entity);
 		}
 		
-		float speed = (1.5f * bit.speedFactor + 3f) * PhysicsSystem.WORLD_SCALE;
-		
-		physics.velocity.set(speed, 0);
+		if (bit.homedIn) {
+			
+		}
+		else {
+			float speed = (1.5f * bit.speedFactor + 3f) * PhysicsSystem.WORLD_SCALE;
+			physics.velocity.set(speed, 0);
+		}
 	}
 	
 	@Override

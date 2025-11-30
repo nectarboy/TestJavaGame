@@ -15,10 +15,13 @@ public class BitComponent implements Component, Poolable {
 	public float width = 0;
 	public float height = 0;
 	
+	public boolean homedIn = false;
+	
 	public void reset() {
 		type = Type.ZERO;
 		speedFactor = 0;
 		width = 0;
 		height = 0;
+		homedIn = false;
 	}
 }

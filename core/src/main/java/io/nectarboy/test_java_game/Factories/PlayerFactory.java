@@ -6,6 +6,7 @@ import io.nectarboy.test_java_game.Systems.*;
 import io.nectarboy.test_java_game.Messages.*;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
 public class PlayerFactory {
@@ -26,11 +27,10 @@ public class PlayerFactory {
 		entity.add(type);
 		
 		PhysicsComponent physics = engine.createComponent(PhysicsComponent.class);
-		physics.collisionMessageT = MessageType.COLLISION_PLAYER;
 		
-		Body body = PhysicsBodyFactory.makeBox(world, BodyDef.BodyType.DynamicBody, false, transform.position, 16 * PhysicsSystem.WORLD_SCALE, 16 * PhysicsSystem.WORLD_SCALE);
-		body.setUserData(entity);
-		physics.body = body;
+		physics.body = PhysicsBodyFactory.makeBody(world, BodyDef.BodyType.DynamicBody, transform.position);
+		physics.body.setUserData(entity);
+		PhysicsBodyFactory.addBoxFixtureToBody(physics.body, MessageType.COLLISION_PLAYER, false, 16 * PhysicsSystem.WORLD_SCALE, 16 * PhysicsSystem.WORLD_SCALE, new Vector2(), 0);
 		entity.add(physics);
 	
 		SpriteComponent sprite = SpriteComponentFactory.make(engine, "player_idle");
