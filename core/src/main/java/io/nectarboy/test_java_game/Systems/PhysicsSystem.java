@@ -77,12 +77,12 @@ public class PhysicsSystem extends IteratingSystem {
 			PhysicsComponent physics = physicsM.get(entity);
 			
 			physics.velocity.add(physics.acceleration);
-			
+
 			Body body = physics.body;
 			if (body == null) continue;
 			
 			body.setTransform(transform.position, transform.rotation * MathUtils.degreesToRadians);
-			body.setLinearVelocity(physics.velocity.cpy());
+			body.setLinearVelocity(physics.velocity);
 		}
 		
 		game.world.step(1f, 6, 2);

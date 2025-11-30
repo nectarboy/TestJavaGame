@@ -37,7 +37,6 @@ public class ActionScreen implements Screen {
 
 		
 		game.engine.addEntity(PlayerFactory.make(game.engine, game.world, game.viewport.getWorldWidth()/4, game.viewport.getWorldHeight()/2));
-//		game.engine.addEntity(BitFactory.make(game.engine, game.world, game.viewport.getWorldWidth()/2, game.viewport.getWorldHeight()/2, BitComponent.Type.ZERO));
 		
 		setupWorldStaticBarrier();
 	}

@@ -12,9 +12,13 @@ public class BitComponent implements Component, Poolable {
 	
 	public Type type = Type.ZERO;
 	public float speedFactor = 0;
+	public float width = 0;
+	public float height = 0;
 	
 	public void reset() {
 		type = Type.ZERO;
 		speedFactor = 0;
+		width = 0;
+		height = 0;
 	}
 }

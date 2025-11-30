@@ -37,8 +37,8 @@ public class ActionScreenSpawnerSystem extends EntitySystem {
 		if ((bitSpawnTick % 3) == 0) {
 			bitSpawnTick = 0;
 			
-			BitComponent.Type type = RNG.getRandomInt(0, 1) == 1 ? BitComponent.Type.ONE : BitComponent.Type.ZERO;
-			game.engine.addEntity(BitFactory.make(game.engine, game.world, RNG.randomFloat() * viewWidth, RNG.randomFloat() * viewHeight, type));
+			BitComponent.Type type = RNG.randomInt(0, 1) == 1 ? BitComponent.Type.ONE : BitComponent.Type.ZERO;
+			game.engine.addEntity(BitFactory.make(game.engine, game.world, PhysicsSystem.WORLD_SCALE * (RNG.randomFloat() * -30 - 30), RNG.randomFloat() * viewHeight, type));			
 		}
 	}
 	

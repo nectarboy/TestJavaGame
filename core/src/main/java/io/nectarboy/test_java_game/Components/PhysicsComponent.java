@@ -1,5 +1,7 @@
 package io.nectarboy.test_java_game.Components;
 
+import java.util.LinkedList;
+
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.utils.Pool.Poolable;
 

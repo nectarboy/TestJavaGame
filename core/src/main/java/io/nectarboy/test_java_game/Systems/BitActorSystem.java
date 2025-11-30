@@ -1,5 +1,6 @@
 package io.nectarboy.test_java_game.Systems;
 
+import io.nectarboy.test_java_game.EntityHelpers;
 import io.nectarboy.test_java_game.Main;
 import io.nectarboy.test_java_game.Components.*;
 import io.nectarboy.test_java_game.Messages.*;
@@ -40,7 +41,7 @@ public class BitActorSystem extends IteratingSystem {
 			switch (m.getType()) {
 				case COLLISION_PLAYER:
 					System.out.println("Bit dies.");
-					recipient.add(game.engine.createComponent(KillEntityComponent.class));
+					EntityHelpers.queueKillEntity(game, recipient);
 					break;
 				default:
 					System.out.println("Bit: hmm?");
@@ -60,6 +61,16 @@ public class BitActorSystem extends IteratingSystem {
 		BitComponent bit = bitM.get(entity);
 		TransformComponent transform = transformM.get(entity);
 		PhysicsComponent physics = physicsM.get(entity);
+		if (physics == null)
+			return;
+		
+		if (transform.position.x > game.viewport.getWorldWidth() + bit.width + bit.height) {
+			EntityHelpers.queueKillEntity(game, entity);
+		}
+		
+		float speed = (1.5f * bit.speedFactor + 3f) * PhysicsSystem.WORLD_SCALE;
+		
+		physics.velocity.set(speed, 0);
 	}
 	
 	@Override

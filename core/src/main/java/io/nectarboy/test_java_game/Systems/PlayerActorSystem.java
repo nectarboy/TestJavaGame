@@ -58,7 +58,7 @@ public class PlayerActorSystem extends IteratingSystem {
 		TransformComponent transform = transformM.get(entity);
 		PhysicsComponent physics = physicsM.get(entity);
 		
-		final float SPEED = 4 * PhysicsSystem.WORLD_SCALE;
+		final float SPEED = 5 * PhysicsSystem.WORLD_SCALE;
 		
 		// Input
 		Vector2 direction = new Vector2();
@@ -72,7 +72,10 @@ public class PlayerActorSystem extends IteratingSystem {
 		if (Gdx.input.isKeyPressed(Input.Keys.A))
 			direction.x -= 1;
 		
-		physics.velocity.set(direction.nor().scl(SPEED));
+		if (direction.x != 0 && direction.y != 0)
+			direction.scl(0.9f);
+		
+		physics.velocity.set(direction.scl(SPEED));
 	}
 	
 	@Override
