@@ -15,6 +15,8 @@ public class AssetPathDictionary {
 		textures.put("background_4", "background_4.png");
 		textures.put("bit_0", "bit_0.png");
 		textures.put("bit_1", "bit_1.png");
+		textures.put("player_bullet_0", "player_bullet_0.png");
+		textures.put("player_bullet_1", "player_bullet_1.png");
 	}
 	
 	public String getTexturePath(String name) {

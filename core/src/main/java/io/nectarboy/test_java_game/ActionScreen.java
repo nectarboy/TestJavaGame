@@ -22,14 +22,19 @@ public class ActionScreen implements Screen {
 		AssetManager.getInstance().loadTexture("player_hurt");
 		AssetManager.getInstance().loadTexture("bit_0");
 		AssetManager.getInstance().loadTexture("bit_1");
+		AssetManager.getInstance().loadTexture("player_bullet_0");
+		AssetManager.getInstance().loadTexture("player_bullet_1");
 		
 		PlayerActorSystem playerActorSystem = new PlayerActorSystem(game);
 		BitActorSystem bitActorSystem = new BitActorSystem(game);
+		PlayerBulletActorSystem playerBulletActorSystem = new PlayerBulletActorSystem(game);
 		PhysicsSystem physicsSystem = new PhysicsSystem(game);
 		playerActorSystem.messageListener.subscribeToPublisher(physicsSystem.collisionMessagePublisher);
+		playerBulletActorSystem.messageListener.subscribeToPublisher(physicsSystem.collisionMessagePublisher);
 		bitActorSystem.messageListener.subscribeToPublisher(physicsSystem.collisionMessagePublisher);
 
 		game.engine.addSystem(playerActorSystem);
+		game.engine.addSystem(playerBulletActorSystem);
 		game.engine.addSystem(bitActorSystem);
 		game.engine.addSystem(physicsSystem);
 		game.engine.addSystem(new ActionScreenRenderSystem(game));

@@ -7,8 +7,9 @@ public class ActorTypeComponent implements Component, Poolable {
 	public enum Type {
 		ACTOR_NULL,
 		ACTOR_PLAYER,
+		ACTOR_PLAYER_BULLET,
 		ACTOR_BIT,
-		ACTOR_CHARGE,
+		ACTOR_ENEMY_CHARGE,
 		ACTOR_SKELETON
 	}
 

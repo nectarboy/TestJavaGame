@@ -2,6 +2,7 @@ package io.nectarboy.test_java_game.Systems;
 
 import io.nectarboy.test_java_game.Main;
 import io.nectarboy.test_java_game.Components.*;
+import io.nectarboy.test_java_game.Factories.PlayerBulletFactory;
 import io.nectarboy.test_java_game.Messages.*;
 import io.nectarboy.test_java_game.Systems.*;
 import com.badlogic.ashley.core.ComponentMapper;
@@ -16,6 +17,8 @@ import com.badlogic.gdx.Input;
 
 public class PlayerActorSystem extends IteratingSystem {
 	private ComponentMapper<PlayerComponent> playerM = ComponentMapper.getFor(PlayerComponent.class);
+	private ComponentMapper<PlayerBulletComponent> playerBulletM = ComponentMapper.getFor(PlayerBulletComponent.class);
+	private ComponentMapper<BitComponent> bitM = ComponentMapper.getFor(BitComponent.class);
 	private ComponentMapper<TransformComponent> transformM = ComponentMapper.getFor(TransformComponent.class);
 	private ComponentMapper<PhysicsComponent> physicsM = ComponentMapper.getFor(PhysicsComponent.class);
 	
@@ -45,6 +48,11 @@ public class PlayerActorSystem extends IteratingSystem {
 					System.out.println("Collide with bit.");
 					Message response = new Message(MessageType.ACTOR_BIT_COLLECTED, recipient, m.getSender());
 					game.engine.getSystem(BitActorSystem.class).messageListener.queueMessage(response);
+					
+					BitComponent bit = bitM.get(m.getSender());
+					PlayerComponent player = playerM.get(recipient);
+					player.addBit(bit.type);
+					System.out.println(Integer.toBinaryString(player.pendingByte));
 					break;
 				}
 				case COLLISION_BIT_HOMEIN_RADIUS: {
@@ -71,7 +79,7 @@ public class PlayerActorSystem extends IteratingSystem {
 		
 		final float SPEED = 5 * PhysicsSystem.WORLD_SCALE;
 		
-		// Input
+		// Movement
 		Vector2 direction = new Vector2();
 		
 		if (Gdx.input.isKeyPressed(Input.Keys.W))
@@ -87,6 +95,24 @@ public class PlayerActorSystem extends IteratingSystem {
 			direction.scl(0.9f);
 		
 		physics.velocity.set(direction.scl(SPEED));
+		
+		// Gun shooting
+		if (player.bulletCooldownTicks > 0) {
+			player.bulletCooldownTicks--;
+		}
+		else if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)) {
+			PlayerComponent.GunConfig gunConfig = player.getCurrentGunConfig();
+			if (gunConfig != null && player.ammo >= gunConfig.ammoUsage) {				
+				Entity bulletEntity = PlayerBulletFactory.make(game.engine, game.world, transform.position.x, transform.position.y, gunConfig.bulletLevel);
+				PlayerBulletComponent bullet = playerBulletM.get(bulletEntity);
+				if (physics.velocity.x > 0)
+					bullet.speed += physics.velocity.x / 2f;
+				
+				game.engine.addEntity(bulletEntity);
+				player.bulletCooldownTicks = gunConfig.bulletCooldown;
+				player.ammo -= gunConfig.ammoUsage;
+			}
+		}
 	}
 	
 	@Override

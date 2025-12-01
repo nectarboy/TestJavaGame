@@ -37,8 +37,10 @@ public class PlayerFactory {
 		sprite.scale.scl(PhysicsSystem.WORLD_SCALE);
 		entity.add(sprite);
 		
-//		MessageListenerComponent messageListener = engine.createComponent(MessageListenerComponent.class);
-//		entity.add(messageListener);
+		
+		// Gun Configs
+		player.gunConfigs.add(new PlayerComponent.GunConfig(0, 4, 1, 1, 5));
+		player.gunConfigs.add(new PlayerComponent.GunConfig(300, 3, 2, 1, 7));
 		
 		return entity;
 	}
